@@ -1,0 +1,32 @@
+version: "3.2"
+
+networks:
+  backend:
+
+
+services:
+  salesapi:
+    image: henrygustavo/salesapi
+    build: 
+      context: ./
+      dockerfile: APIDockerfile
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
+    container_name: salesapi
+    ports:
+      - "9006:80"
+    networks:
+      - backend
+      
+  salesendpoint:
+    image: henrygustavo/salesendpoint
+    build: 
+      context: ./
+      dockerfile: EndPointDockerfile
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
+    container_name: salesendpoint
+    ports:
+      - "9007:80"
+    networks:
+      - backend

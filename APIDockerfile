@@ -1,0 +1,21 @@
+FROM microsoft/dotnet AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM microsoft/dotnet AS build
+WORKDIR /src
+COPY ["Sales.API/Sales.API.csproj", "Sales.API/"]
+COPY ["Sales.Contracts/Sales.Contracts.csproj", "Sales.Contracts/"]
+COPY ["Sales.InternalMessages/Sales.InternalMessages.csproj", "Sales.InternalMessages/"]
+RUN dotnet restore "Sales.API/Sales.API.csproj"
+COPY . .
+WORKDIR "/src/Sales.API"
+RUN dotnet build "Sales.API.csproj" -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish "Sales.API.csproj" -c Release -o /app
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "Sales.API.dll"]

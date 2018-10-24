@@ -1,0 +1,21 @@
+FROM microsoft/dotnet AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM microsoft/dotnet AS build
+WORKDIR /src
+COPY ["Sales.EndPoint/Sales.EndPoint.csproj", "Sales.EndPoint/"]
+COPY ["Sales.Contracts/Sales.Contracts.csproj", "Sales.Contracts/"]
+COPY ["Sales.InternalMessages/Sales.InternalMessages.csproj", "Sales.InternalMessages/"]
+RUN dotnet restore "Sales.EndPoint/Sales.EndPoint.csproj"
+COPY . .
+WORKDIR "/src/Sales.EndPoint"
+RUN dotnet build "Sales.EndPoint.csproj" -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish "Sales.EndPoint.csproj" -c Release -o /app
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "Sales.EndPoint.dll"]

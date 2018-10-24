@@ -1,0 +1,11 @@
+﻿---
+applications:
+- name: salesapi
+  random-route: true
+  memory: 128M
+
+  docker:
+    image: henrygustavo/salesapi
+  env:
+    ASPNETCORE_ENVIRONMENT: Production
+    
