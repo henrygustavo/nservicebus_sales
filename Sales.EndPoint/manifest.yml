@@ -3,6 +3,7 @@ applications:
 - name: salesendpoint
   memory: 128MB
   instances: 1
+  disk_quota: 2GB
   docker:
     image: henrygustavo/salesendpoint
   stack: cflinuxfs2

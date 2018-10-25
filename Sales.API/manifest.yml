@@ -3,7 +3,7 @@ applications:
 - name: salesapi
   random-route: true
   memory: 128M
-
+  disk_quota: 2GB
   docker:
     image: henrygustavo/salesapi
   env:
