@@ -38,6 +38,7 @@ namespace Sales.API.Controllers
         {
             try
             {
+                var t = "hola";
                 placeOrderCommand.OrderId = Guid.NewGuid().ToString();
                 var notification = _placeOrderCommandValidator.Validate(placeOrderCommand);
                 throwErrors(notification);
